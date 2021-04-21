@@ -9,14 +9,16 @@ public class TaskList {
     private List<Task> taskList = new ArrayList<>();
 
     public void add(Task task) throws IOException {
+        FileHandler f = new FileHandler(Path.of("todos.txt"));
         taskList.add(task);
+        f.updateTheFile(task.getTaskDescription());
     }
-//
-//    public void removeTask(int i) throws IOException {
-//        FileHandler f = new FileHandler(Path.of("todos.txt"));
-//        taskList.remove(i-1);
-//        f.saveTheFile(printAll());
-//    }
+
+    public void removeTask(int i) throws IOException {
+        FileHandler f = new FileHandler(Path.of("todos.txt"));
+        taskList.remove(i-1);
+        f.removeTheLine(i);
+    }
 
     public void updateTasks(FileHandler f) {
         List<String> fileLines = f.readTheFile();
