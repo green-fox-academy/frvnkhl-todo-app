@@ -11,7 +11,15 @@ public class TaskList {
     public void add(Task task) throws IOException {
         FileHandler f = new FileHandler(Path.of("todos.txt"));
         taskList.add(task);
-        f.updateTheFile(task.getTaskDescription());
+        f.updateTheFile("[" + task.checkCompletion() + "]  " + task.getTaskDescription());
+    }
+
+    public void completeTaskInAList(int i) throws IOException {
+        FileHandler f = new FileHandler(Path.of("todos.txt"));
+        Task checkedTask = taskList.get(i);
+        checkedTask.setCompleted(true);
+        String newLine = "[" + checkedTask.checkCompletion() + "]  " + checkedTask.getTaskDescription();
+        f.updateATask(i, newLine);
     }
 
     public void removeTask(int i) throws IOException {
@@ -24,8 +32,13 @@ public class TaskList {
         List<String> fileLines = f.readTheFile();
         for (String s : fileLines) {
             Task t = new Task(s);
+            String[] checkCompletion = s.split("  ");
             if(!taskList.contains(t)) {
-                taskList.add(new Task(s));
+                Task newTask = new Task(checkCompletion[1]);
+                if (checkCompletion[0].charAt(1) == 'x') {
+                    newTask.setCompleted(true);
+                }
+                taskList.add(newTask);
             }
         }
     }

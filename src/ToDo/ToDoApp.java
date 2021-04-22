@@ -9,6 +9,7 @@ public class ToDoApp {
         TaskList taskList = new TaskList();
         FileHandler f = new FileHandler(Path.of("todos.txt"));
         String input = args[0];
+        Writer w = new Writer();
 
         switch (input) {
             case "-l":
@@ -24,6 +25,7 @@ public class ToDoApp {
                 if (args.length > 1) {
                     String task = args[1];
                     taskList.add(new Task(task));
+                    System.out.println("Task added (:");
                 } else {
                     System.err.println("Unable to add, no task provided");
                 }
@@ -34,8 +36,9 @@ public class ToDoApp {
                     taskList.updateTasks(f);
                     try {
                         int taskNum = Integer.parseInt(args[1]);
-                        if (taskNum < taskList.getTaskList().size()) {
+                        if (taskNum <= taskList.getTaskList().size()) {
                             taskList.removeTask(taskNum);
+                            System.out.println("Task No" + taskNum + " removed");
                         } else {
                             System.err.println("Unable to remove: index is out of bound");
                         }
@@ -52,8 +55,9 @@ public class ToDoApp {
                     taskList.updateTasks(f);
                     try {
                         int taskNum = Integer.parseInt(args[1]);
-                        if (taskNum < taskList.getTaskList().size()) {
-                            taskList.getTaskList().get(taskNum - 1).setCompleted(true);
+                        if (taskNum <= taskList.getTaskList().size()) {
+                            taskList.completeTaskInAList(taskNum - 1);
+                            System.out.println("Task No" + taskNum + " completed");
                         } else {
                             System.err.println("Unable to complete: index is out of bound");
                         }
@@ -64,6 +68,10 @@ public class ToDoApp {
                     System.err.println("Unable to remove: no index provided");
                 }
                 break;
+
+            default:
+                System.err.println("Unsupported Argument");
+                w.homeScreen();
 
         }
     }

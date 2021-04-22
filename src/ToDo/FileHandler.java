@@ -1,9 +1,10 @@
 package ToDo;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,10 +43,10 @@ public class FileHandler {
 
     public void updateTheFile(String s) {
         try (FileWriter fw = new FileWriter(String.valueOf(folderPath), true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter out = new PrintWriter(bw)) {
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
             out.println(s);
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.err.println("Saving todo failed :(");
             e.printStackTrace();
         }
@@ -82,5 +83,13 @@ public class FileHandler {
         tempFile.renameTo(inputFile);
     }
 
-
+    public void updateATask(int taskNum, String newLine) throws IOException {
+        try {
+            List<String> fileContent = new ArrayList<>(Files.readAllLines(folderPath, StandardCharsets.UTF_8));
+            fileContent.set(taskNum, newLine);
+            Files.write(folderPath, fileContent, StandardCharsets.UTF_8);
+        } catch (FileNotFoundException e) {
+            System.err.println("FIle not found");
+        }
+    }
 }

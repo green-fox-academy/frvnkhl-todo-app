@@ -1,3 +1,4 @@
-Walk the dog
-Do Homework
-Feed monkeys
+[ ]  Walk the dog
+[x]  Do Homework
+[ ]  Feed monkeys
+[ ]  send money abroad
